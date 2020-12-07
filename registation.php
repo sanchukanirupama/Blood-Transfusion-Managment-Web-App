@@ -1,10 +1,10 @@
 <?php 
 
 session_start();
-
 $con  = mysqli_connect('localhost', 'root' , '1234');
 
 mysqli_select_db($con, 'bloodbank');
+
 
 $name = $_POST['user'];
 $pass = md5($_POST['password']);
@@ -21,11 +21,15 @@ $result = mysqli_query($con, $s);
 $num = mysqli_num_rows($result);
 
 if($num == 1) {
-    echo "Already Register on this Email Address";
-}else {
+    $_SESSION['message_reg']="You have been alrady register on this email!";
+    $_SESSION['msg_type_reg']="danger";
+    header('location:login.php');
+}
+else {
     $reg = " insert into donators(name , password , email , gender , district , bloodgroup) values ('$name' , '$pass' , '$email' , '$gender' , '$district' , '$blood')";
     mysqli_query($con, $reg);
-    echo "Registration Successful!";
+    $_SESSION['message_reg']="Registation Successfull Thank You!";
+    $_SESSION['msg_type_reg']="Success";
+    header('location:login.php');
 }
-
 ?>

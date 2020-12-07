@@ -13,8 +13,10 @@ $mail = $_SESSION["email"];
 
 if($select == "1") {
 $s1 = " select * from donators where email = '$email' && password = '$pass'";
+$nam  = "select name from donators where email = '$email' ";
 
 $result1 = mysqli_query($con, $s1);
+$nama = mysqli_query($con, $nam);
 $num1 = mysqli_num_rows($result1);
 
 if($num1 == 1) {

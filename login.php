@@ -3,6 +3,7 @@
             <title>User Login and Registration</title> 
             <link rel="stylesheet" type="text/css"
             href="style.css">
+            
             <link rel="stylesheet" type="text/css"
             href="bootstrap.min.css">
             <!-- Font Awesome -->
@@ -12,17 +13,24 @@
 <!-- Bootstrap core CSS -->
             <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
 <!-- Material Design Bootstrap -->
-            <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
-            
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">     
 </head>
 
 <body>
-<nav class="navbar navbar-light bg-light">
-  <a class="navbar-brand" href="#">
-    <img src="im2.png" width="30" height="30" class="d-inline-block align-top" alt="">
-    National Blood Bank
-  </a>
-</nav>
+
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+<img src="im3.png" width="30" height="30" class="d-inline-block align-top" alt=" ">
+    <a class="navbar-brand" href="#"><strong>&nbsp National Blood Bank</strong></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+      </ul>
+    </div>
+  </nav>
+
 <div class="container">
     <div class="login-box">
     <div class="row">
@@ -100,8 +108,9 @@
             <option>AB-</option>
     </select>
   </div>
-         <button type="submit" id='reg' class="btn aqua-gradient btn-sm">Register</button> 
+         <button type="submit" id='reg' name='save' class="btn aqua-gradient btn-sm">Register</button> 
         </form>
+        
     </div>
         </div>
     </div>
@@ -109,6 +118,4 @@
 </div>
 
 </body>
-
-
 </html>

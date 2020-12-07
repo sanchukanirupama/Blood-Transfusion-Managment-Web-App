@@ -6,7 +6,7 @@ if ($_SERVER['HTTP_REFERER'] == $url) {
   exit();
 }
 $mysqli = new mysqli ('localhost', 'root' , '1234' , 'bloodbank') or die (mysqli_error($mysqli));
-$result = $mysqli ->query("SELECT*FROM crud WHERE district = (SELECT district FROM donators WHERE email = '$mail')");
+$result = $mysqli ->query("SELECT*FROM crud WHERE district = (SELECT district FROM donators WHERE email = '$mail') && bloodgroup = (SELECT bloodgroup FROM donators WHERE email = '$mail')");
 
 ?>
 <html>
@@ -16,6 +16,9 @@ $result = $mysqli ->query("SELECT*FROM crud WHERE district = (SELECT district FR
             href="style home.css">
             <link rel="stylesheet" type="text/css"
             href="bootstrap.min.css">
+            <link rel="stylesheet" type="text/css"
+            href="nav.css">
+         
             <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
 <!-- Google Fonts -->
             <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
@@ -31,30 +34,58 @@ $result = $mysqli ->query("SELECT*FROM crud WHERE district = (SELECT district FR
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <!-- MDB core JavaScript -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
-<script src=js.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
+<script>
+function sweetclick(){
+  swal("Successfully Logged!", " Thank You For Beeing Valubal Donor ", "success");
+}
 
-<body>
-<nav class="navbar navbar-light bg-light">
-  <a class="navbar-brand" href="#">
-    <img src="im2.png" width="30" height="30" class="d-inline-block align-top" alt="">
-    National Blood Bank
-  </a>
-</nav>
+</script>
+<body onload="sweetclick()">
+<!--Main Navigation-->
+<header>
+<html lang="en" class="full-height">
 
-<div class="container">
-<div class="alert alert-success" role="alert">
-  <h4 class="alert-heading">Logged Successfully!</h4>
-  <p>You successfully logged in to the national blood bank system. thank you for beeing donator</p>
-  <hr>
-  <p class="mb-0">Donate blood and Save lives.</p>
-</div>
-</div>
+<!--Main Navigation-->
+<header>
 
+  <nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+  <img src="im3.png" width="30" height="30" class="d-inline-block align-top" alt=" ">
+    <a class="navbar-brand" href="#"><strong>&nbsp National Blood Bank</strong></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Profile</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
-</div>
-</div>
+  <div class="view intro-2" style="">
+    <div class="full-bg-img">
+      <div class="mask rgba-purple-light flex-center">
+        <div class="container text-center white-text wow fadeInUp">
+          <h1>DONATE BLOOD AND SAVE LIVES </h1>
+          <br>
+          <h2>" A single pint can save three lives, a single gesture can create a million smiles "</h2>
+          
+        </div>
+      </div>
+    </div>
+  </div>
 
+</header>
 <?php require_once 'crud.php'; ?>
 
 
@@ -66,6 +97,8 @@ $result = $mysqli ->query("SELECT*FROM crud WHERE district = (SELECT district FR
  <th>Hospital Name</th>
  <th>District</th>
  <th>Requested Blood Type</th>
+ <th>Date</th>
+ <th>Discription</th>
  <th colspan = "2">Action</th>
  </tr>
  </thead>
@@ -76,9 +109,11 @@ $result = $mysqli ->query("SELECT*FROM crud WHERE district = (SELECT district FR
       <td><?php echo $row['hospital_name']; ?></td>
       <td><?php echo $row['district']; ?></td>
       <td><?php echo $row['bloodgroup']; ?></td>
+      <td><?php echo $row['req_time']; ?></td>
+      <td><?php echo $row['Discription']; ?></td>
       <td>
       <a href="crud.php?delete=<?php echo $row['id']; ?>"
-      class="btn btn-danger btn-sm ">Delete</a>
+      class="btn btn-Success btn-sm ">Donate</a>
 
       
       </td>
@@ -102,7 +137,7 @@ function pre_r($array){
 
 </div>
 </body>
-<footer class="page-footer font-small indigo">
+<footer class="page-footer font-small unique-color-dark pt-4">
 
   <!-- Footer Elements -->
   <div class="container">

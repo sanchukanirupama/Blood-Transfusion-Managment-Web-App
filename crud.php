@@ -7,11 +7,13 @@ if(isset($_POST['save'])){
 $name = $_POST['hname'];
 $district = $_POST['district'];
 $blood = $_POST['bgroup'];
+$dis = $_POST['discription'];
+$today = date("F j, Y, g:i a");
 
-$mysqli ->query("INSERT INTO crud (hospital_name , district , bloodgroup) VALUES ('$name' , '$district' , '$blood')") or
+$mysqli ->query("INSERT INTO crud (hospital_name , district , bloodgroup , req_time ,  discription) VALUES ('$name' , '$district' , '$blood' , '$today' , '$dis')") or
 die($mysqli->error);
 
-$_SESSION['message']="Recode has been Published!";
+$_SESSION['message']="Request has been Published!";
 $_SESSION['msg_type']="Success";
 
 header("location:home.php");
@@ -23,8 +25,7 @@ if(isset($_GET['delete'])){
     $id = $_GET['delete'];
     $mysqli->query("DELETE FROM crud WHERE id=$id") or die($mysqli->error);
 
-    
-    $_SESSION['message']="Recode has been deleted!";
+    $_SESSION['message']="Request has been deleted!";
     $_SESSION['msg_type']="danger";
 
     header("location:home.php");

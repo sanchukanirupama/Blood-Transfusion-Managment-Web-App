@@ -1,0 +1,25 @@
+.view {
+    background: url("im5.jpg") center center;
+    background-size: cover;
+}
+
+.navbar {
+    background-color: transparent;
+}
+
+.top-nav-collapse {
+    background-color: transparent;
+}
+
+@media only screen and (max-width: 768px) {
+    .navbar {
+        background-color: transparent;
+    }
+}
+
+html,
+body,
+header,
+.view {
+  height: 100%;
+}
