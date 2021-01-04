@@ -1,7 +1,5 @@
 <?php 
 
-session_start();
-
 $con  = mysqli_connect('localhost', 'root' , '1234');
 
 mysqli_select_db($con, 'bloodbank');
@@ -15,14 +13,18 @@ if($select == "1") {
 $s1 = " select * from donators where email = '$email' && password = '$pass'";
 $nam  = "select name from donators where email = '$email' ";
 
-$result1 = mysqli_query($con, $s1);
 $nama = mysqli_query($con, $nam);
+$_SESSION['user_name'] = $nama;
+$result1 = mysqli_query($con, $s1);
 $num1 = mysqli_num_rows($result1);
 
 if($num1 == 1) {
-    $_SESSION['user_email'] = $email;
+    session_start();
+    $_SESSION['user_email'] = $email;  
     header('location:userprofile.php');
 }else {
+    session_start();
+    $_SESSION['messagex']="wrong user name password";
     header('location:login.php');
 }
 }
@@ -33,8 +35,12 @@ else{
     $num2 = mysqli_num_rows($result2);
     
     if($num2 == 1) {
+        session_start();
+        $_SESSION['user_email'] = $email; 
         header('location:home.php');
     }else {
+        session_start();
+        $_SESSION['messagex']="wrong user name password";
         header('location:login.php');
     }
 }

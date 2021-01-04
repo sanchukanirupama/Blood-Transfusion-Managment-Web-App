@@ -14,7 +14,6 @@ $mysqli ->query("INSERT INTO crud (hospital_name , district , bloodgroup , req_t
 die($mysqli->error);
 
 $_SESSION['message']="Request has been Published!";
-$_SESSION['msg_type']="Success";
 
 header("location:home.php");
 
@@ -25,10 +24,10 @@ if(isset($_GET['delete'])){
     $id = $_GET['delete'];
     $mysqli->query("DELETE FROM crud WHERE id=$id") or die($mysqli->error);
 
-    $_SESSION['message']="Request has been deleted!";
-    $_SESSION['msg_type']="danger";
+    $_SESSION['message0']="Request has been deleted!";
+    
 
     header("location:home.php");
 }
-
+    
 ?>

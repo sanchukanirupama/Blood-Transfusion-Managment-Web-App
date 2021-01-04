@@ -1,5 +1,5 @@
 <?php 
-session_start();
+$mysqli = new mysqli ('localhost', 'root' , '1234' , 'bloodbank') or die (mysqli_error($mysqli));
 if ($_SERVER['HTTP_REFERER'] == $url) {
   header('Location: login.php');
   exit();
@@ -7,7 +7,7 @@ if ($_SERVER['HTTP_REFERER'] == $url) {
 ?>
 <html>
 <head>
-            <title>Home Page</title> 
+            <title>Hospital Profile</title> 
             <link rel="stylesheet" type="text/css"
             href="style home.css">
             <link rel="stylesheet" type="text/css"
@@ -31,12 +31,7 @@ if ($_SERVER['HTTP_REFERER'] == $url) {
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
-<script>
-function sweetclick(){
-  swal("Successfully Logged!", " Thank You For Beeing Valubal Donor ", "success");
-}
 
-</script>
 <body>
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
 <img src="im3.png" width="30" height="30" class="d-inline-block align-top" alt=" ">
@@ -45,18 +40,46 @@ function sweetclick(){
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
+    <?php
+    $check = $mysqli ->query("SELECT*FROM acceptreq WHERE status=0") or die($mysqli->error);
+    $count = mysqli_num_rows($check);
+    ?>
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="index.php">Home <i class="fas fa-home"></i><span class="sr-only">(current)</span></a>
         </li>
+        <li class="nav-item dropdown ml-auto">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Notification <i class="far fa-bell"></i> <span class="badge badge-danger" id="count"><?php echo $count ?></span>
+        </a>
+
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+        <?php
+         $check1 = $mysqli ->query("SELECT*FROM acceptreq WHERE status=0") or die($mysqli->error);
+
+         if(mysqli_num_rows($check1)>0){
+         while($get_result=mysqli_fetch_assoc($check)){
+         
+          echo '<a class="dropdown-item  font-weight-bold" href="notification.php?id='.$get_result['id'].'"> <i class="fas fa-check-circle"></i> Your Request Accepted By '.$get_result['donorName'].'</a>';
+          echo '<div class="dropdown-divider"></div>';
+         }
+         }
+         else{
+          echo '<a class="dropdown-item text-danger font-weight-bold" href="#">Sorryy!! Havent Found Any Donor</a>';
+         }
+         ?>
+        </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
+          <a class="nav-link" href="Login.php">Logout <i class="fas fa-sign-out-alt"></i></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Profile</a>
-        </li>
-      </ul>
+        </ul>
+      
     </div>
   </nav>
 
@@ -72,17 +95,28 @@ function sweetclick(){
       </div>
     </div>
   </div>
-  <?php 
-if(isset($_SESSION['message'])): ?>
-<div class="container">
-<div class="alert alert-<?=$_SESSION['msg_type']?>">
+  
+<?php
+session_start();
+$result = $mysqli ->query("SELECT*FROM crud ORDER BY req_time") or die($mysqli->error);
+?>
+
+<?php 
+if(isset($_SESSION['message0'])): ?>
+
       <?php
-      echo $_SESSION['message'];
+      echo '<script> swal("Deleted Successesfully!", "You Can Publish Requests If You have", "error")</script>';
+      unset($_SESSION['message0']);
+      ?>
+
+<?php 
+elseif(isset($_SESSION['message'])): ?>
+
+      <?php
+      echo '<script> swal("Request Published Successfully!", "Wait For A Donor To Accepet The Request", "success")</script>';
       unset($_SESSION['message']);
       ?>
 
-</div>
-</div>
 <?php endif ?>
 
 <div class="container">
@@ -127,11 +161,6 @@ if(isset($_SESSION['message'])): ?>
 <?php require_once 'crud.php'; ?>
 
 
-<?php
-$mysqli = new mysqli ('localhost', 'root' , '1234' , 'bloodbank') or die (mysqli_error($mysqli));
-$result = $mysqli ->query("SELECT*FROM crud") or die($mysqli->error);
-?>
-
 <div class="container">
 <div class="row justify-content-center">
 <table class="table login-left">
@@ -148,7 +177,7 @@ $result = $mysqli ->query("SELECT*FROM crud") or die($mysqli->error);
  <?php
       while($row = $result->fetch_assoc()): ?>
       <tr>
-      <td><?php echo $row['hospital_name']; ?></td>
+      <td ><?php echo $row['hospital_name']; ?></td>
       <td><?php echo $row['district']; ?></td>
       <td><?php echo $row['bloodgroup']; ?></td>
       <td><?php echo $row['req_time']; ?></td>
@@ -166,15 +195,7 @@ $result = $mysqli ->query("SELECT*FROM crud") or die($mysqli->error);
 </div> 
 
 
-<?php
-function pre_r($array){
 
-  echo '<pre>';
-  print_r($array);
-  echo '</pre>';
-} 
-
-?>
 
 </div>
 </body>

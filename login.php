@@ -1,11 +1,18 @@
+<?php 
+session_start();
+if ($_SERVER['HTTP_REFERER'] == $url) {
+  header('Location: index.php');
+  exit();
+}
+?>
 <html>
 <head>
             <title>User Login and Registration</title> 
             <link rel="stylesheet" type="text/css"
             href="style.css">
-            
             <link rel="stylesheet" type="text/css"
             href="bootstrap.min.css">
+            <link rel="stylesheet" type="text/css" href="iziToast.min.css">
             <!-- Font Awesome -->
             <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
 <!-- Google Fonts -->
@@ -14,7 +21,19 @@
             <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
 <!-- Material Design Bootstrap -->
             <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">     
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+            <script type="text/javascript" src="iziToast.min.js" ></script>
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
+<script>
+function izi(){
+iziToast.error({
+        title: 'Error!',
+        message: 'Invalid Username or Password',
+        position: 'topRight',
+    });
+  }
+    </script>
 
 <body>
 
@@ -27,9 +46,39 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+          <a class="nav-link" href="index.php">Home <i class="fas fa-home"></i> <span class="sr-only">(current)</span></a>
+        </li>
       </ul>
     </div>
   </nav>
+
+  <?php 
+if(isset($_SESSION['message1'])): ?>
+
+      <?php
+      echo '<script> swal("Already Registerd!", "Already registerd on this email address", "error")</script>';
+      unset($_SESSION['message1']);
+      ?>
+
+<?php 
+elseif(isset($_SESSION['message2'])): ?>
+
+      <?php
+      echo '<script> swal("Registation Successfull!", "Thank you for registerd as donor", "success")</script>';
+      unset($_SESSION['message2']);
+      ?>
+
+<?php endif ?>
+
+<?php 
+if(isset($_SESSION['messagex'])): ?>
+
+      <?php
+      echo '<script> izi() </script>';
+      unset($_SESSION['messagex']);
+      ?>
+<?php endif ?>
 
 <div class="container">
     <div class="login-box">
@@ -117,5 +166,5 @@
   
 </div>
 
-</body>
+  </body>
 </html>

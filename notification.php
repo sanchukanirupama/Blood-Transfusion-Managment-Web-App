@@ -1,15 +1,21 @@
 <?php
-if ($_SERVER['HTTP_REFERER'] == $url) {
-  header('Location: login.php');
-  exit();
-}
+$mysqli = new mysqli ('localhost', 'root' , '1234' , 'bloodbank') or die (mysqli_error($mysqli));
+
+
 
 ?>
 
+<?php
+if(isset($_GET['id'])){
+
+    $main_id = $_GET['id'];
+    $update = $mysqli ->query("UPDATE acceptreq SET status = 1 WHERE id = '$main_id'") or die($mysqli->error);
+}
+?>
 <html>
 
 <head>
-            <title>Donor Profile</title> 
+            <title>Notification</title> 
             <link rel="stylesheet" type="text/css"
             href="style home.css">
             <link rel="stylesheet" type="text/css"
@@ -36,6 +42,7 @@ if ($_SERVER['HTTP_REFERER'] == $url) {
 <!--Main Navigation-->
 <header>
 <html lang="en" class="full-height">
+
 
 <!--Main Navigation-->
 <header>
@@ -79,96 +86,41 @@ if ($_SERVER['HTTP_REFERER'] == $url) {
     </div>
   </div>
 
-</header>
 <?php
 session_start();
-$mysqli = new mysqli ('localhost', 'root' , '1234' , 'bloodbank') or die (mysqli_error($mysqli)); 
-$mail = $_SESSION['user_email'];
-$result = $mysqli ->query("SELECT*FROM crud WHERE district = (SELECT district FROM donators WHERE email = '$mail') && bloodgroup = (SELECT bloodgroup FROM donators WHERE email = '$mail')");
+$accept_result = $mysqli ->query("SELECT*FROM acceptreq") or die($mysqli->error);
 ?>
-
-<?php 
-if(isset($_SESSION['message01'])): ?>
-
-      <?php
-      echo '<script> swal("Already Accepted!", "You Can Accept Only One Request For Month", "warning")</script>';
-      unset($_SESSION['message01']);
-      ?>
-
-<?php
-elseif(isset($_SESSION['message02'])): ?>
-      <?php
-      echo '<script> swal("Request Accepted Successfully!", "Your Donation Will Bright Someones Future!", "success")</script>';
-      unset($_SESSION['message02']);
-      ?>
-<?php endif ?>
+</header>
 
 <div class="container">
 <div class="row justify-content-center">
 <table class="table login-left">
  <thead class="thead-light">
  <tr>
- <th>Hospital Name</th>
- <th>District</th>
- <th>Requested Blood Type</th>
- <th>Date</th>
- <th>Discription</th>
+ <th>Donor Name</th>
+ <th>Gender</th>
+ <th>Weight (Kg)</th>
+ <th>Requested Blood Group</th>
+ <th>Accepted Date</th>
+ <th>Telephone Number</th>
+ <th>Medical Condition</th>
  <th colspan = "2">Action</th>
  </tr>
  </thead>
 
  <?php
-      while($row = $result->fetch_assoc()): ?>
+      while($row = $accept_result->fetch_assoc()): ?>
       <tr>
-      <td><?php echo $row['hospital_name']; ?></td>
-      <td><?php echo $row['district']; ?></td>
-      <td><?php echo $row['bloodgroup']; ?></td>
-      <td><?php echo $row['req_time']; ?></td>
-      <td><?php echo $row['Discription']; ?></td>
+      <td><?php echo $row['donorName']; ?></td>
+      <td><?php echo $row['gender']; ?></td>
+      <td><?php echo $row['weight']; ?></td>
+      <td><?php echo $row['bloodGroup']; ?></td>
+      <td><?php echo $row['cr_date']; ?></td>
+      <td><?php echo $row['telephone']; ?></td>
+      <td><?php echo $row['Medic_con']; ?></td>
       <td>
-      <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#message<?php echo $row['id'];?>">Accept</button>
-      <div id="message<?php echo $row['id'];?>" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-   
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">ADD YOUR DETAILS</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <form action="accept.php" method="post">
-      <div class="modal-body">
-        <div class="form-group">
-             <label>Donor</label>
-             <input type="text" readonly class="form-control-plaintext" name="staticemail" id="staticEmail" value="<?php echo $mail; ?>">
-            </div>
-        <div class="form-group">
-             <label>Token Number</label>
-             <input type="text" readonly class="form-control-plaintext" name="token" id="token" value="<?php echo $row['id'];?>">
-              </div>
-        <div class="form-group">
-            <label>Telephone Number</label>
-            <input type="text" name="teleno" class="form-control" required>
-            </div>
-        <div class="form-group">
-            <label>Weight In Kilograms</label>
-            <input type="text" name="weight" class="form-control" required>
-            </div>
-        <div class="form-group">
-            <label>Mention The Names Of Medicines (if you takeing any at the moment)</label>
-            <input type="text" name="medic" class="form-control">
-            </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
-        <button type="submit" name="submit" class="btn btn-success btn-sm">Accept Request</button>
-      </div>
-     </form>
-    </div>
-  </div>
-</div>
-
+      <a href="crud.php?delete=<?php echo $row['id']; ?>"
+      class="btn btn-danger btn-sm ">Delete</a>
       </td>
     </tr>
     <?php endwhile; ?>
@@ -178,14 +130,6 @@ elseif(isset($_SESSION['message02'])): ?>
 </div> 
 
 
-
-<?php
-function pre_r($array){
-
-  echo '<pre>';
-  print_r($array);
-  echo '</pre>';
-} 
 
 ?>
 
