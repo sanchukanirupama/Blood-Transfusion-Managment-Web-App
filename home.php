@@ -1,9 +1,11 @@
 <?php 
-$mysqli = new mysqli ('localhost', 'root' , '1234' , 'bloodbank') or die (mysqli_error($mysqli));
+include('database.php');
 if ($_SERVER['HTTP_REFERER'] == $url) {
   header('Location: login.php');
   exit();
 }
+$mysqli->query("DELETE from crud where datediff(now(), crud.req_time) > 1");
+
 ?>
 <html>
 <head>
@@ -40,9 +42,13 @@ if ($_SERVER['HTTP_REFERER'] == $url) {
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-
     <?php
-    $check = $mysqli ->query("SELECT*FROM acceptreq WHERE status=0") or die($mysqli->error);
+session_start();
+$mail = $_SESSION['user_email'];
+$result = $mysqli ->query("SELECT*FROM crud WHERE hemail = '$mail'");
+?>
+    <?php
+    $check = $mysqli ->query("SELECT*FROM acceptreq WHERE status=0 && hospital_email='$mail'") or die($mysqli->error);
     $count = mysqli_num_rows($check);
     ?>
 
@@ -59,7 +65,7 @@ if ($_SERVER['HTTP_REFERER'] == $url) {
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
         <?php
-         $check1 = $mysqli ->query("SELECT*FROM acceptreq WHERE status=0") or die($mysqli->error);
+         $check1 = $mysqli ->query("SELECT*FROM acceptreq WHERE status=0 && hospital_email='$mail'") or die($mysqli->error);
 
          if(mysqli_num_rows($check1)>0){
          while($get_result=mysqli_fetch_assoc($check)){
@@ -69,14 +75,14 @@ if ($_SERVER['HTTP_REFERER'] == $url) {
          }
          }
          else{
-          echo '<a class="dropdown-item text-danger font-weight-bold" href="#">Sorryy!! Havent Found Any Donor</a>';
+          echo '<a class="dropdown-item text-danger font-weight-bold" href="notification.php">Sorryy!! Havent Found Any Donor</a>';
          }
          ?>
         </li>
         </ul>
         <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="Login.php">Logout <i class="fas fa-sign-out-alt"></i></a>
+          <a class="nav-link" href="login.php">Logout <i class="fas fa-sign-out-alt"></i></a>
         </li>
         </ul>
       
@@ -85,47 +91,15 @@ if ($_SERVER['HTTP_REFERER'] == $url) {
 
   <div class="view intro-2" style="">
     <div class="full-bg-img">
-      <div class="mask rgba-purple-light flex-center">
-        <div class="container text-center white-text wow fadeInUp">
-          <h1>DONATE BLOOD AND SAVE LIVES </h1>
-          <br>
-          <h2>" A single pint can save three lives, a single gesture can create a million smiles "</h2>
-          
-        </div>
-      </div>
-    </div>
-  </div>
-  
-<?php
-session_start();
-$result = $mysqli ->query("SELECT*FROM crud ORDER BY req_time") or die($mysqli->error);
-?>
-
-<?php 
-if(isset($_SESSION['message0'])): ?>
-
-      <?php
-      echo '<script> swal("Deleted Successesfully!", "You Can Publish Requests If You have", "error")</script>';
-      unset($_SESSION['message0']);
-      ?>
-
-<?php 
-elseif(isset($_SESSION['message'])): ?>
-
-      <?php
-      echo '<script> swal("Request Published Successfully!", "Wait For A Donor To Accepet The Request", "success")</script>';
-      unset($_SESSION['message']);
-      ?>
-
-<?php endif ?>
-
+      <div class="mask rgba-purple flex-center">
+        
 <div class="container">
 <form action="crud.php" method="post">
 
-  <div class="form-row login-left">
+  <div class="form-row login-right">
     <div class="form-group col-md-6">
       <label for="inputCity">Hospital Name</label>
-      <input type="text" name='hname' class="form-control" id="inputCity" required>
+      <input type="text" name='hname' class="form-control" id="inputCity">
     </div>
     <div class="form-group col-md-4">
       <label for="inputState">District</label>
@@ -156,14 +130,14 @@ elseif(isset($_SESSION['message'])): ?>
       <input type="text" name='discription' class="form-control" id="Discrip">
     </div>
   </div>
-  <button type="submit" name='save' class="btn btn-light btn-sm">Published Request</button>
+  <button type="submit" name='save' class="btn btn-primary btn-sm">Published Request</button>
 </form>
 <?php require_once 'crud.php'; ?>
 
 
 <div class="container">
 <div class="row justify-content-center">
-<table class="table login-left">
+<table class="table table-dark">
  <thead class="thead-light">
  <tr>
  <th>Hospital Name</th>
@@ -198,6 +172,28 @@ elseif(isset($_SESSION['message'])): ?>
 
 
 </div>
+      </div>
+    </div>
+  </div>
+  
+<?php 
+if(isset($_SESSION['message0'])): ?>
+
+      <?php
+      echo '<script> swal("Deleted Successesfully!", "You Can Publish Requests If You have", "error")</script>';
+      unset($_SESSION['message0']);
+      ?>
+
+<?php 
+elseif(isset($_SESSION['message'])): ?>
+
+      <?php
+      echo '<script> swal("Request Published Successfully!", "Wait For A Donor To Accepet The Request", "success")</script>';
+      unset($_SESSION['message']);
+      ?>
+
+<?php endif ?>
+
 </body>
 <footer class="page-footer font-small unique-color-dark pt-4">
 

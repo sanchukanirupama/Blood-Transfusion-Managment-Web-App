@@ -1,8 +1,5 @@
 <?php 
-
-$con  = mysqli_connect('localhost', 'root' , '1234');
-
-mysqli_select_db($con, 'bloodbank');
+include('database.php');
 
 $pass = md5($_POST['password']);
 $email = $_POST['email'];
@@ -10,13 +7,11 @@ $select = $_POST["select"];
 $mail = $_SESSION["email"];
 
 if($select == "1") {
-$s1 = " select * from donators where email = '$email' && password = '$pass'";
-$nam  = "select name from donators where email = '$email' ";
+$s1 = $mysqli ->query("SELECT * from donators where email = '$email' && password = '$pass'");
+$nam  = $mysqli ->query("SELECT name from donators where email = '$email'");
 
-$nama = mysqli_query($con, $nam);
-$_SESSION['user_name'] = $nama;
-$result1 = mysqli_query($con, $s1);
-$num1 = mysqli_num_rows($result1);
+$_SESSION['user_name'] = $nam;
+$num1 = mysqli_num_rows($s1);
 
 if($num1 == 1) {
     session_start();
@@ -29,10 +24,8 @@ if($num1 == 1) {
 }
 }
 else{
-    $s2 = " select * from hospitle where hospitalemail = '$email' && hospitalpass = '$pass'";
-
-    $result2 = mysqli_query($con, $s2);
-    $num2 = mysqli_num_rows($result2);
+    $s2 = $mysqli -> query("SELECT*from hospitle where hospitalemail = '$email' && hospitalpass = '$pass'");
+    $num2 = mysqli_num_rows($s2);
     
     if($num2 == 1) {
         session_start();

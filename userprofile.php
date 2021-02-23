@@ -82,7 +82,8 @@ if ($_SERVER['HTTP_REFERER'] == $url) {
 </header>
 <?php
 session_start();
-$mysqli = new mysqli ('localhost', 'root' , '1234' , 'bloodbank') or die (mysqli_error($mysqli)); 
+include('database.php');
+include('delete.php');
 $mail = $_SESSION['user_email'];
 $result = $mysqli ->query("SELECT*FROM crud WHERE district = (SELECT district FROM donators WHERE email = '$mail') && bloodgroup = (SELECT bloodgroup FROM donators WHERE email = '$mail')");
 ?>
@@ -91,13 +92,18 @@ $result = $mysqli ->query("SELECT*FROM crud WHERE district = (SELECT district FR
 if(isset($_SESSION['message01'])): ?>
 
       <?php
-      echo '<script> swal("Already Accepted!", "You Can Accept Only One Request For Month", "warning")</script>';
+      echo '<script> swal("Already Accepted!", "You Already Accepted This Request !", "warning")</script>';
       unset($_SESSION['message01']);
       ?>
 
 <?php
 elseif(isset($_SESSION['message02'])): ?>
       <?php
+      $token = $_SESSION['message02'];
+      $to = $mysqli ->query("SELECT hemail from crud WHERE id ='$token'");
+      $subject = "You Got A Match";
+      $mess = "You got a match from donor for your request";
+      mail($to,$subject,$mess);
       echo '<script> swal("Request Accepted Successfully!", "Your Donation Will Bright Someones Future!", "success")</script>';
       unset($_SESSION['message02']);
       ?>
@@ -105,15 +111,15 @@ elseif(isset($_SESSION['message02'])): ?>
 
 <div class="container">
 <div class="row justify-content-center">
-<table class="table login-left">
- <thead class="thead-light">
+<table class="table table-hover table-light">
+ <thead class="thead-dark">
  <tr>
  <th>Hospital Name</th>
  <th>District</th>
  <th>Requested Blood Type</th>
  <th>Date</th>
  <th>Discription</th>
- <th colspan = "2">Action</th>
+ <th colspan = "1">Action</th>
  </tr>
  </thead>
 

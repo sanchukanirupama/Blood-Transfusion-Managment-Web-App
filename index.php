@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+session_start();
+?>
 
 <head>
   <meta charset="utf-8">
@@ -37,8 +40,29 @@
   <link href="navbar.css" rel="stylesheet">
 
   <link href="assets/css/stylehome.css" rel="stylesheet">
+  <script type="text/javascript" src="iziToast.min.js" ></script>
+  <link rel="stylesheet" type="text/css" href="iziToast.min.css">
   
 </head>
+<script>
+function izi1(){
+iziToast.success({
+        title: 'DONE!',
+        message: 'Your Message Has Been Sent',
+       position: 'bottomRight',
+    });
+  }
+</script>
+
+<script>
+function izi2(){
+iziToast.error({
+        title: 'Error!',
+        message: 'Every Field Need To Be Filled!',
+        =position: 'bottomRight',
+    });
+  }
+    </script>
 
 <body>
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
@@ -115,19 +139,6 @@
     </div>
   </section>
 
-  <?php 
-if(isset($_SESSION['message_reg'])): ?>
-<div class="container">
-<div class="alert alert-<?=$_SESSION['msg_type_reg']?>">
-      <?php
-      echo $_SESSION['message_reg'];
-      unset($_SESSION['message_reg']);
-      ?>
-
-</div>
-</div>
-<?php endif ?>
-
   <!-- ======= Header ======= -->
  
   <main id="main">
@@ -184,6 +195,86 @@ if(isset($_SESSION['message_reg'])): ?>
 
       </div> 
     </section><!-- End Info Box Section -->
+    
+<?php 
+if(isset($_SESSION['messagey'])): ?>
+
+      <?php
+      echo '<script> izi1() </script>';
+      unset($_SESSION['messagey']);
+      ?>
+      <?php 
+elseif(isset($_SESSION['messagez'])): ?>
+
+      <?php
+      echo '<script> izi2() </script>';
+      unset($_SESSION['messagez']);
+      ?>
+<?php endif ?>
+
+    <!-- ======= Contact Section ======= -->
+    <section id="contact" class="contact">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>Contact Us</h2>
+        </div>
+
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6">
+            <div class="contact-about">
+              <h3>About</h3>
+              <p>This is the only cyber space where meets blood donors and local hospitals which needs blood for their patients. Reach Us if you if you need some help throuh this or you want to help us to improve this.</p>
+              <p>Thank You !</p>
+            
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mt-4 mt-md-0">
+            <div class="info">
+              <div>
+                <i class="ri-map-pin-line"></i>
+                <p>108 Parakrama Road<br>Sri Lanka, Colombo 7</p>
+              </div>
+
+              <div>
+                <i class="ri-mail-send-line"></i>
+                <p>info@bloodbank.com</p>
+              </div>
+
+              <div>
+                <i class="ri-phone-line"></i>
+                <p>+94 77 541 2544</p>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-lg-5 col-md-12">
+            <form action="mail.php" method="post">
+              <div class="form-group">
+                <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+              </div>
+              <div class="form-group">
+                <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+        
+              </div>
+              <div class="form-group">
+                <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
+               
+              </div>
+             <button type="submit" class="btn blue-gradient">Send Message</button></div>
+            </form>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Contact Section -->
   </main><!-- End #main -->
 
  

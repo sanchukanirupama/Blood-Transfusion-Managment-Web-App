@@ -1,8 +1,5 @@
 <?php
-$mysqli = new mysqli ('localhost', 'root' , '1234' , 'bloodbank') or die (mysqli_error($mysqli));
-
-
-
+include('database.php');
 ?>
 
 <?php
@@ -60,7 +57,7 @@ if(isset($_GET['id'])){
           <a class="nav-link" href="index.php">Home <i class="fas fa-home"></i> <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Profile</a>
+          <a class="nav-link" href="home.php">Profile</a>
         </li>
         </ul>
         <ul class="navbar-nav ml-auto">
@@ -72,30 +69,20 @@ if(isset($_GET['id'])){
     </span>
     </div>
   </nav>
-
+  <?php
+session_start();
+$mail = $_SESSION['user_email'];
+$accept_result = $mysqli ->query("SELECT*FROM acceptreq WHERE hospital_email = '$mail'") or die($mysqli->error);
+?>
   <div class="view intro-2" style="">
     <div class="full-bg-img">
-      <div class="mask rgba-purple-light flex-center">
+      <div class="mask rgba-purple flex-center">
         <div class="container text-center white-text wow fadeInUp">
-          <h1>DONATE BLOOD AND SAVE LIVES </h1>
-          <br>
-          <h2>" A single pint can save three lives, a single gesture can create a million smiles "</h2>
           
-        </div>
-      </div>
-    </div>
-  </div>
-
-<?php
-session_start();
-$accept_result = $mysqli ->query("SELECT*FROM acceptreq") or die($mysqli->error);
-?>
-</header>
-
 <div class="container">
 <div class="row justify-content-center">
-<table class="table login-left">
- <thead class="thead-light">
+<table class="table table-light">
+ <thead class="thead-dark">
  <tr>
  <th>Donor Name</th>
  <th>Gender</th>
@@ -119,7 +106,48 @@ $accept_result = $mysqli ->query("SELECT*FROM acceptreq") or die($mysqli->error)
       <td><?php echo $row['telephone']; ?></td>
       <td><?php echo $row['Medic_con']; ?></td>
       <td>
-      <a href="crud.php?delete=<?php echo $row['id']; ?>"
+      <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#message<?php echo $row['id'];?>">Accept</button>
+      <div id="message<?php echo $row['id'];?>" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">CONTACT DONOR</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <form action="notiaccept.php" method="post">
+      <div class="modal-body">
+        <div class="form-group">
+             <label>Donor</label>
+             <input type="text" readonly class="form-control-plaintext" name="staticemail" id="staticEmail" value="<?php echo $row['donoremail']; ?>">
+            </div>
+            <div class="form-group">
+             <label>Hospital Name</label>
+             <input type="text" readonly class="form-control-plaintext" name="staticname" id="staticname" value="<?php echo $row['hospitalname']; ?>">
+            </div>
+        <div class="form-group">
+             <label>Hospital Email</label>
+             <input type="text" readonly class="form-control-plaintext" name="token" id="token" value="<?php echo $row['hospital_email'];?>">
+              </div>
+        <div class="form-group">
+            <label>Message</label>
+            <textarea type="varchar" name="message" rows="3" class="form-control"></textarea>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Close</button>
+        <button type="submit" name="submit" class="btn btn-success btn-sm">Send</button>
+      </div>
+     </form>
+    </div>
+  </div>
+</div>
+
+      </td>
+      <td>
+      <a href="notiaccept.php?delete=<?php echo $row['id']; ?>"
       class="btn btn-danger btn-sm ">Delete</a>
       </td>
     </tr>
@@ -128,12 +156,14 @@ $accept_result = $mysqli ->query("SELECT*FROM acceptreq") or die($mysqli->error)
 </table>
 </div>
 </div> 
-
-
-
-?>
-
 </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.10.1.min.js" integrity="sha256-SDf34fFWX/ZnUozXXEH0AeB+Ip3hvRsjLwp6QNTEb3k=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
