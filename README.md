@@ -1,4 +1,4 @@
-# bloodbank-managment
+# Blood-Transfusion-Managment-Web-App 
 
 Main Objective:
 This is a Web Application which is designed meets blood donors and hospitals whenever they need blood for their patients.
