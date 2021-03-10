@@ -49,7 +49,7 @@ CREATE TABLE `acceptreq` (
 --
 
 INSERT INTO `acceptreq` (`id`, `token`, `hospital_email`, `hospitalname`, `bloodGroup`, `donorName`, `gender`, `weight`, `Medic_con`, `telephone`, `donoremail`, `cr_date`, `status`) VALUES
-(23, 79, 'sanchukanirupama@gmail.com', 'ragama hospital', 'B+', 'Sanchuka Nirupama', 'Male', 62, '', '0711790277', 'sanchukanirupama@gmail.com', '2021-02-18 02:40:12', 1);
+(23, 79, 'xxx@gmail.com', 'ragama hospital', 'B+', 'Sanchuka Nirupama', 'Male', 62, '', '0711111111', 'xxx@gmail.com', '2021-02-18 02:40:12', 1);
 
 -- --------------------------------------------------------
 
@@ -72,7 +72,7 @@ CREATE TABLE `crud` (
 --
 
 INSERT INTO `crud` (`id`, `hemail`, `hospital_name`, `district`, `bloodgroup`, `req_time`, `Discription`) VALUES
-(79, 'sanchukanirupama@gmail.com', 'ragama hospital', 'Gampaha', 'B+', 'February 18, 2021, 5:35 am', '');
+(79, 'xxx@gmail.com', 'ragama hospital', 'Gampaha', 'B+', 'February 18, 2021, 5:35 am', '');
 
 -- --------------------------------------------------------
 
@@ -95,14 +95,6 @@ CREATE TABLE `donators` (
 
 INSERT INTO `donators` (`name`, `password`, `email`, `gender`, `district`, `bloodgroup`) VALUES
 ('kaizer souze', '81dc9bdb52d04dc20036dbd8313ed055', 'kaizersouze@gmail.com', 'Male', 'Gampaha', 'B+'),
-('mathakshi duthika', '81dc9bdb52d04dc20036dbd8313ed055', 'mathakshiduthica@gmail.com', 'Female', 'Gampaha', 'O-'),
-('nash', 'f45731e3d39a1b2330bbf93e9b3de59e', 'nash@gmai.com', 'Male', 'Colombo', 'A+'),
-('nirupama', '81dc9bdb52d04dc20036dbd8313ed055', 'nirupama@gmail.com', 'Male', 'Colombo', 'A+'),
-('raju bhai', 'bc7316929fe1545bf0b98d114ee3ecb8', 'rajubhai@gmail.com', 'Male', 'Colombo', 'B+'),
-('root', '81dc9bdb52d04dc20036dbd8313ed055', 'root@gmail.com', 'Female', 'Colombo', 'AB+'),
-('Sanchuka Nirupama', '81dc9bdb52d04dc20036dbd8313ed055', 'sanchukanirupama@gmail.com', 'Male', 'Gampaha', 'B+'),
-('sharuk khan', '289dff07669d7a23de0ef88d2f7129e7', 'sharukkhan@gmail.com', 'Male', 'Colombo', 'A+'),
-('yohann', '6074c6aa3488f3c2dddff2a7ca821aab', 'yohan@gmail.com', 'Male', 'Colombo', 'A+'),
 ('yohann', '81dc9bdb52d04dc20036dbd8313ed055', 'yohan555@gmail.com', 'Female', 'Galle', 'B+');
 
 -- --------------------------------------------------------
@@ -124,8 +116,7 @@ CREATE TABLE `hospitle` (
 
 INSERT INTO `hospitle` (`hospital_name`, `hospitalemail`, `district`, `hospitalpass`) VALUES
 ('colombo hospital', 'colombohospital@gmail.com', 'colombo', '81dc9bdb52d04dc20036dbd8313ed055'),
-('', 'ragamahospital@gmail.com', '', '81dc9bdb52d04dc20036dbd8313ed055'),
-('ragama hospital', 'sanchukanirupama@gmail.com', 'gampaha', '81dc9bdb52d04dc20036dbd8313ed055');
+('ragama hospital', 'xxx@gmail.com', 'gampaha', '81dc9bdb52d04dc20036dbd8313ed055');
 
 --
 -- Indexes for dumped tables
